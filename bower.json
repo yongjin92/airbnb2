@@ -1,0 +1,17 @@
+{
+  "name": "",
+  "description": "",
+  "main": "",
+  "authors": [
+    "yongjin92 <rnjsdydwls09@naver.com>"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
