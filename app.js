@@ -11,8 +11,10 @@ var mongoose   = require('mongoose');
 var passport = require('passport');
 var configAuth = require('./config/auth');
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
+var routes = require('./routes/index'),
+    users = require('./routes/users'),
+    todos = require('./routes/todos'),
+    tasks = require('./routes/tasks');
 
 var routeAuth = require('./routes/auth');
 
@@ -52,7 +54,6 @@ app.use('/bower_components',  express.static(path.join(__dirname, '/bower_compon
 app.use(passport.initialize());
 app.use(passport.session());
 
-
 app.use(function(req, res, next) {
   res.locals.currentUser = req.session.user;
   res.locals.flashMessages = req.flash();
@@ -63,6 +64,8 @@ configAuth(passport);
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/todos', todos);
+app.use('/tasks', tasks);
 routeAuth(app, passport);
 
 // catch 404 and forward to error handler
