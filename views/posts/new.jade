@@ -1,0 +1,29 @@
+extends ../layout
+
+block content
+  .container
+    h1.page-header 숙소 등록
+    form(action='/posts', method='POST')
+      .form-group
+        label(for='title') 숙소
+        input.form-control(type='text', id='title', name='title', placeholder='숙소 이름을 입력하세요')
+      .form-group
+        label(for='city') 도시
+        input.form-control(type='text', id='city', name='city', placeholder='도시를 입력하세요')
+      .form-group
+        label(for='address') 주소
+        input.form-control(type='text', id='address', name='address', placeholder='주소를 입력하세요')
+      .form-group
+        label(for=' price') 가격
+        input.form-control(type='number', id=' price', name=' price', placeholder='가격을 입력하세요')
+      .form-group
+        label(for='rule') 규칙
+        input.form-control(type='text', id='rule', name='rule', placeholder='규칙을 입력하세요')
+      .form-group
+        label(for='content') 소개
+        input.form-control(type='text', id='content', name='content', placeholder='숙소소개를 입력하세요')
+   
+      div.form-actions
+        a.btn.btn-default(href='javascript:window.history.back();') 뒤로 
+        | 
+        button.btn.btn-primary(type='submit') 작성

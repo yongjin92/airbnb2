@@ -1,5 +1,5 @@
-var express = require('express');
 var path = require('path');
+var express = require('express');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
@@ -13,14 +13,11 @@ var configAuth = require('./config/auth');
 
 var routes = require('./routes/index'),
     users = require('./routes/users'),
-    todos = require('./routes/todos'),
-    tasks = require('./routes/tasks');
+    posts = require('./routes/posts');
 
 var routeAuth = require('./routes/auth');
 
-
-var app = express();
-
+module.exports = function(app, io) {
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -40,12 +37,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(methodOverride('_method', {methods: ['POST', 'GET']}));
-
+var MongoStore = require('connect-mongo')(session);
+app.sessionStore = new MongoStore({mongooseConnection: mongoose.connection});
 app.use(session({
+  key: 'express.sid',
   resave: true,
   saveUninitialized: true,
-  secret: 'long-long-long-secret-string-1313513tefgwdsvbjkvasd'
+  secret: 'long-long-long-secret-string-1313513tefgwdsvbjkvasd',
 }));
+
 app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/bower_components',  express.static(path.join(__dirname, '/bower_components')));
@@ -55,7 +55,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(function(req, res, next) {
-  res.locals.currentUser = req.session.user;
+  res.locals.currentUser = req.user;
   res.locals.flashMessages = req.flash();
   next();
 });
@@ -64,8 +64,7 @@ configAuth(passport);
 
 app.use('/', routes);
 app.use('/users', users);
-app.use('/todos', todos);
-app.use('/tasks', tasks);
+app.use('/posts', posts);
 routeAuth(app, passport);
 
 // catch 404 and forward to error handler
@@ -99,5 +98,5 @@ app.use(function(err, req, res, next) {
   });
 });
 
-
-module.exports = app;
+return app;
+};

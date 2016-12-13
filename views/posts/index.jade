@@ -1,0 +1,33 @@
+extends ../layout
+
+block content
+  .container
+    h1.page-header 숙소 목록
+    
+    table.table.table-striped.table-bordered
+      thead
+        tr
+          th 작성자
+          th 제목
+          th 도시
+          th 등록일시
+          th 
+      tbody
+        each post in posts
+          tr
+            td
+              a(href='/users/#{post.owner._id}')= post.owner.username
+            td
+              a(href='/posts/#{post._id}')= post.title
+            td= post.city
+            td= moment(post.createdAt).format('YYYY-MM-DD HH:mm:ss')
+            td
+              if(currentUser._id.toString()==post.owner._id.toString())
+                a.btn.btn-xs.btn-default(href='/posts/#{post._id}/edit') 수정
+                | 
+                a.btn.btn-xs.btn-default(href='/posts/#{post._id}?_method=DELETE') 삭제
+    div
+      form.search-form(role='search', method='GET', action='/posts/index')
+        input.form-control(type='text', id='search_keyword', name='search_keyword', placeholder='도시로 검색하기')
+        button.btn.btn-default(type='submit') 검색
+        a.btn.btn-primary(href='/posts/new') 숙소등록
